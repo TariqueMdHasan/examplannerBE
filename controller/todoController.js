@@ -138,3 +138,13 @@ const addBulkTodos = async (req, res) => {
 };
 
 module.exports = { addTodo, getTodo, deleteTodo, updateTodo, addBulkTodos };
+
+
+
+
+
+
+
+
+
+

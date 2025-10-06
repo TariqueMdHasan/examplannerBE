@@ -15,13 +15,17 @@ const todoDataSchema = new mongoose.Schema({
     type: String,
     required: true
   },
+  type: {
+    type: String,
+    required: true,
+  },
   scheduledIn: {
     type: String,
     enum: ['morning', 'afternoon', 'night'],
     required: true
   },
   date: {
-    type: String,
+    type: Date,
     required: true
   },
   status: {

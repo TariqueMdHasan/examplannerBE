@@ -1,6 +1,8 @@
 const User = require('../model/user.js')
 const {generateToken} = require('../utils/token.js')
 const bcrypt = require('bcrypt');
+const { OAuth2Client } = require("google-auth-library");
+const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 
 // register for role user
 const registerUser = async (req, res) => {  
@@ -122,6 +124,52 @@ const registerAdmin = async (req, res) => {
     }
 };
 
+
+
+// Google login
+const googleLogin = async (req, res) => {
+  try {
+    const { token } = req.body; // token from frontend (Google OAuth response)
+
+    // Verify Google token
+    const ticket = await client.verifyIdToken({
+      idToken: token,
+      audience: process.env.GOOGLE_CLIENT_ID,
+    });
+
+    const payload = ticket.getPayload();
+    const { email, name, sub } = payload;
+
+    let user = await User.findOne({ email });
+
+    if (!user) {
+      user = await User.create({
+        userName: name.replace(/\s+/g, "_"),
+        email,
+        password: sub + "Aa@1", // dummy password
+        name,
+        role: "user",
+      });
+    }
+
+    const jwtToken = generateToken(user._id);
+
+    return res.status(200).json({
+      message: "Google login successful",
+      user: {
+        _id: user._id,
+        userName: user.userName,
+        email: user.email,
+        name: user.name,
+        role: user.role,
+      },
+      token: jwtToken,
+    });
+  } catch (error) {
+    console.error("Error in Google login", error);
+    res.status(500).json({ message: "Google login failed" });
+  }
+};
 
 
 // login anyone
@@ -394,4 +442,4 @@ const changeUserRole = async (req, res) => {
 
 module.exports = { registerUser, loginUser, updateUser, deleteUser, 
     getUserData, getAllUsers, impersonateUser, registerAdmin,
-    togglePauseUser, changeUserRole }
+    togglePauseUser, changeUserRole, googleLogin }
