@@ -7,8 +7,7 @@ const todoDataSchema = new mongoose.Schema({
     required: true
   },
   subject: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Subject',  // ✅ reference to Subject
+    type: String,
     required: true
   },
   task: {
@@ -32,7 +31,11 @@ const todoDataSchema = new mongoose.Schema({
     type: String,
     enum: ['todo', 'done', 'inprogress', 'backlog'],
     default: 'todo'
-  }
+  },
+  type: {
+    type: String,
+    required: false,
+  },
 }, { timestamps: true })
 
 module.exports = mongoose.model('Todo', todoDataSchema)

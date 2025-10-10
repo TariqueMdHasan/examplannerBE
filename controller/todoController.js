@@ -13,6 +13,7 @@ const addTodo = async (req, res) => {
       status,
       scheduledIn,
       date,
+      type: "personal",
     });
 
     await newTodo.save();

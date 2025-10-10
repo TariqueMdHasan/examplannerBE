@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const authMiddleware = require('../middleware/authMiddleware.js');
+const { authMiddleware } = require('../middleware/authMiddleware.js');
 const { addSubject, getSubject, deleteSubject, updateSubject, getSubjectById } = require('../controller/subjectControllers.js');
 
 router.post('/', authMiddleware, addSubject);

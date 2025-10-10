@@ -12,7 +12,8 @@ const {
   registerAdmin,
   togglePauseUser, 
   changeUserRole,
-  googleLogin
+  googleLogin,
+  logoutUser
 } = require("../controller/authController.js");
 
 
@@ -23,6 +24,8 @@ const checkRole = require('../middleware/checkRole.js')
 router.post("/register", registerUser);
 router.post("/login", loginUser);
 router.post("/google", googleLogin);
+// ✅ Logout route
+router.post("/logout", logoutUser);
 
 
 // ✅ Only superadmin can create admins
