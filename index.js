@@ -13,7 +13,7 @@ dotenv.config()
 connectDB()
 app.use(cookieParser());
 app.use(cors({
-  origin: "http://localhost:5173",
+  origin: "https://examplanner-fe.vercel.app",
   credentials: true
 }));
 
